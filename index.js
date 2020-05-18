@@ -2,6 +2,7 @@
 const wa = require("@open-wa/wa-automate");
 
 const readTXT = require('./lerteste');
+const convertimg = require('./convertimg');
 
 wa.create().then((client) => start(client));
 
@@ -27,10 +28,20 @@ async function start(client) {
         client.sendText(message.from, "Grupos criados");
         var res = await readTXT.listar();
         for (let i = 0; i < quantidade; i++) {
-          let gnome = nome + " " + (i + 1+res.length);
+          if (res[0]=='') {
+            var cont =0
+          }
+          else{
+            var cont =res.length
+          }
+         
+          let gnome = nome + " " + (i + 1+cont);
           var ori = Promise.resolve(client.createGroup(gnome, message.from));
-          ori.then(function (v) {
-            console.log(v.gid._serialized);
+          ori.then(async function (v) {
+            var icon = await convertimg.fileToBase64('./logo.JPG')
+            
+            Promise.resolve(client.setGroupIcon(v.gid._serialized,icon));
+            
             readTXT.addId(v.gid._serialized);
           });
         }
@@ -78,6 +89,18 @@ async function start(client) {
       else{
         client.sendText(message.from, "qual a menssagem?");
       }
+    }
+    if(arrayOfStrings[0]=='adm'){
+      var res = await readTXT.listar();
+      client.sendText(message.from, "so adm");
+
+      res.forEach((item)=>{
+        var adm = Promise.resolve(client.setGroupToAdminsOnly(item));
+            adm.then((res)=>{
+              console.log(res)
+            })
+      })
+      
     }
   });
 }

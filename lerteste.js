@@ -20,7 +20,13 @@ module.exports = {
 
   async addId(id){
     var res = fs.readFileSync('ids.txt', 'utf8');
-    fs.writeFileSync('ids.txt', res+','+id);
+    if(res==''){
+      fs.writeFileSync('ids.txt', id);
+    }
+    else{
+      fs.writeFileSync('ids.txt', res+','+id);
+    }
+    
   }
 
 
