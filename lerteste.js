@@ -6,8 +6,8 @@ var fs = require('fs');
 
 module.exports = {
 
-  async listar(){
-    var res = fs.readFileSync('ids.txt', 'utf8');
+  async listar(file){
+    var res = fs.readFileSync(file, 'utf8');
     /*fs.readFile('ids.txt', 'utf8', (err, data)=>{
       console.log(data);
       var arrayOfStrings = data.split(",");
@@ -18,13 +18,13 @@ module.exports = {
     return arrayOfStrings;
   },
 
-  async addId(id){
-    var res = fs.readFileSync('ids.txt', 'utf8');
+  async addId(file,id){
+    var res = fs.readFileSync(file, 'utf8');
     if(res==''){
-      fs.writeFileSync('ids.txt', id);
+      fs.writeFileSync(file, id);
     }
     else{
-      fs.writeFileSync('ids.txt', res+','+id);
+      fs.writeFileSync(file, res+','+id);
     }
     
   }

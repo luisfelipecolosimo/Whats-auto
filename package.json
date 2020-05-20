@@ -1,0 +1,14 @@
+{
+  "name": "whats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@open-wa/wa-automate": "^1.9.33"
+  },
+  "devDependencies": {}
+}
