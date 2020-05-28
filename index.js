@@ -27,7 +27,8 @@ async function start(client) {
   client.onMessage(async(message) => {
 
     var arrayOfStrings = message.body.split("=");
-    console.log(arrayOfStrings);
+    console.log(arrayOfStrings+' : '+message.from);
+    
     
 
     //para criar
@@ -149,6 +150,69 @@ async function start(client) {
 
       
       
+    }
+
+    if(arrayOfStrings[0]=='Mandarm'){
+      var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0"
+    + "NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO"
+    + "3gAAAABJRU5ErkJggg==";
+// strip off the data: url prefix to get just the base64-encoded bytes
+var data = img.replace(/^data:image\/\w+;base64,/, "");
+var buf = new Buffer.alloc(data, 'base64');
+fs.writeFile('image.png', buf);
+      
+      /* var icon = await convertimg.base64_encode('logo.jpeg')
+      
+      var img = await fs.readFileSync('logo.jpeg', { encoding: 'base64' });
+
+      var imageAsBase64 = fs.readFileSync('logo.jpeg', 'base64');
+
+      imageAsBase64 = 'data:img/jpeg;base64,' + imageAsBase64;
+      
+      var ori = Promise.resolve(client.sendFile('5519999610009@c.us',imageAsBase64,'some file.jpeg', `Hello this is the caption`))
+      ori.then(async function(v){
+        console.log(v)
+      });
+      //fs.writeFileSync('teste.jpeg', img);
+      fs.writeFile('teste.jpeg', img, 'binary', function(err){});
+      
+    var ori = Promise.resolve(client.sendImage(message.from,img,"logo.jpeg","salve"))
+      ori.then(async function(v){
+        console.log(v)
+      }); 
+     try {
+        var ori = await client.sendImage(message.from, img , "logo.jpeg" , "salve");
+        console.log(ori)
+      }
+      catch(err) {
+        console.log(err)
+        next(err);
+      }*/
+      
+    }
+
+    if (message.mimetype && message.from=='5519999610009@c.us') {
+      console.log('aq')
+      const filename = `${message.t}.${mime.extension(message.mimetype)}`;
+      const mediaData = await decryptMedia(message);
+      const imageBase64 = `data:${message.mimetype};base64,${mediaData.toString(
+        'base64'
+      )}`;
+      console.log(filename)
+      console.log(mediaData)
+      console.log(imageBase64)
+      fs.writeFile(filename, mediaData, function(err) {
+        if (err) {
+          return console.log(err);
+        }
+        console.log('The file was saved!');
+      });
+      await client.sendImage(
+        message.from,
+        imageBase64,
+        filename,
+        `You just sent me this ${message.type}`
+      );
     }
 
     if(arrayOfStrings[0]=='Grupos'){
