@@ -49,9 +49,9 @@ async function start(client) {
             var cont =res.length
           }        
          var users=[message.from,"5519981398566","5519981302441@c.us","5541987252533@c.us"];
-          let gnome = nome + " " + (i +10+ 1+cont);
+          let gnome = nome  + (i +67);
           console.log(gnome)
-          var ori = Promise.resolve(client.createGroup(gnome,users));
+          var ori = Promise.resolve(client.createGroup(gnome,"5541987252533@c.us"));
           ori.then(async function (v) {
             
             console.log(v)
