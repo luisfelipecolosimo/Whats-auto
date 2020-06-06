@@ -237,5 +237,21 @@ fs.writeFile('image.png', buf);
         readTXT.addId('ids.txt',v.gid._serialized);
       })*/
     }
+
+
+    if(arrayOfStrings[0]=='OiOi'){
+      console.log('aq')
+      var filename= 'ccmei.pdf';
+      var binarydata = fs.readFileSync(filename);
+
+      
+
+
+      data = "data:" + "application/pdf" + ";base64," + Buffer.from(binarydata).toString('base64');
+
+      await client.sendFile(message.from,data,'some file.pdf', message.id);
+      
+      
+    }
   });
 }
