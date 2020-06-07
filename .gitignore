@@ -1,5 +1,4 @@
 /node_modules
 session.data.json
-.png
-.jpeg
-.txt
+/ldm
+/fcl

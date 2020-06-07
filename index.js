@@ -29,7 +29,9 @@ async function start(client) {
     var arrayOfStrings = message.body.split("=");
     console.log(arrayOfStrings+' : '+message.from);
     
-    
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     //para criar
     if (arrayOfStrings[0] === "Criar") {
@@ -49,21 +51,33 @@ async function start(client) {
             var cont =res.length
           }        
          var users=[message.from,"5519981398566","5519981302441@c.us","5541987252533@c.us"];
-          let gnome = nome  + (i +67);
+          let gnome = nome  +' '+(i +19);
           console.log(gnome)
-          var ori = Promise.resolve(client.createGroup(gnome,"5541987252533@c.us"));
+          var ori = Promise.resolve(client.createGroup(gnome,"5519999610009@c.us"));
           ori.then(async function (v) {
             
             console.log(v)
             var icon = await convertimg.fileToBase64('logo.jpeg')
+
+            var filename= 'ccmei.pdf';
+          var binarydata = fs.readFileSync('fcl.png');
+
+      
+
+
+            data = "data:" + "image/png" + ";base64," + Buffer.from(binarydata).toString('base64');
             
-             Promise.resolve(client.setGroupIcon(v.gid._serialized,icon));
+             Promise.resolve(client.setGroupIcon(v.gid._serialized,data));
+
+             await setGroupEditToAdminsOnly(v.gid._serialized,true)
+             await setGroupToAdminsOnly(v.gid._serialized,true)
             
             readTXT.addId('ids.txt',v.gid._serialized);
             
             
             
           });
+          await sleep(500);
         }
       }
     }
@@ -115,6 +129,7 @@ async function start(client) {
       if(menssage!=''){
         var res = await readTXT.listar('idsantigos.txt');
       client.sendText(message.from, "menssagem mudada para os grupos");
+      await sleep(500);
 
       res.forEach((item)=>{
         client.sendText(item, menssage);
@@ -140,11 +155,10 @@ async function start(client) {
             Promise.resolve(client.promoteParticipant(item,message.from))
             .then(function (a) {});*/
 
-            var link = Promise.resolve(client.getGroupInviteLink(item));
-            link.then(function (c){
-              console.log(c)
-              readTXT.addId('links.txt',c+'\n');
-            });
+            var link = await client.getGroupInviteLink(item);
+            
+              readTXT.addId('links.txt',link+' :'+item+'\n');
+          
             
       })
 
