@@ -10,6 +10,7 @@ wa.create().then((client) => start(client));
 var quantidade = 0;
 var nome = "";
 var menssage = "";
+var menssage2 = "";
 
 ev.on('qr.**', async qrcode => {
   //Printa o qr code no formato base 64 no console
@@ -50,14 +51,14 @@ async function start(client) {
           else{
             var cont =res.length
           }        
-         var users=[message.from,"5519981398566","5519981302441@c.us","5541987252533@c.us"];
-          let gnome = nome  +' '+(i +19);
+         var users=[message.from,"5516997384261@c.us"];
+          let gnome = nome  +' '+(i +71);
           console.log(gnome)
-          var ori = Promise.resolve(client.createGroup(gnome,"5519999610009@c.us"));
+          var ori = Promise.resolve(client.createGroup(gnome,users));
           ori.then(async function (v) {
             
             console.log(v)
-            var icon = await convertimg.fileToBase64('logo.jpeg')
+            var icon = await convertimg.fileToBase64('fcl.png')
 
             var filename= 'ccmei.pdf';
           var binarydata = fs.readFileSync('fcl.png');
@@ -69,8 +70,11 @@ async function start(client) {
             
              Promise.resolve(client.setGroupIcon(v.gid._serialized,data));
 
-             await setGroupEditToAdminsOnly(v.gid._serialized,true)
-             await setGroupToAdminsOnly(v.gid._serialized,true)
+             Promise.resolve(client.setGroupEditToAdminsOnly(v.gid._serialized,true));
+             Promise.resolve(client.setGroupToAdminsOnly(v.gid._serialized,true));
+
+             await client.promoteParticipant(v.gid._serialized, "5516997384261@c.us");
+
             
             readTXT.addId('ids.txt',v.gid._serialized);
             
@@ -111,6 +115,13 @@ async function start(client) {
       client.sendText(message.from, "menssagem mudada para: "+menssage);
     }
 
+    if(arrayOfStrings[0] === "Msg2"){
+      menssage2 = arrayOfStrings[1];
+      client.sendText(message.from, "menssagem mudada para: "+menssage2);
+    }
+
+    
+
     if(arrayOfStrings[0] === "Mandar"){
       if(menssage!=''){
         var res = await readTXT.listar('ids.txt');
@@ -124,6 +135,38 @@ async function start(client) {
         client.sendText(message.from, "qual a menssagem?");
       }
     }
+
+    if(arrayOfStrings[0] === "MandarA"){
+      
+        var res = await readTXT.listar('ids.txt');
+      client.sendText(message.from, "menssagem mudada para os grupos");
+
+      res.forEach(async(item)=>{
+        var filename= 'aula3.pdf';
+        var binarydata = fs.readFileSync(filename);
+  
+        
+  
+  
+        data = "data:" + "application/pdf" + ";base64," + Buffer.from(binarydata).toString('base64');
+  
+        await client.sendFile(item,data,'Intensivao_material_aula3.pdf', message.id);
+
+        sleep(300)
+        var filename= 'aula2.pdf';
+        var binarydata = fs.readFileSync(filename);
+  
+        
+  
+  
+        data = "data:" + "application/pdf" + ";base64," + Buffer.from(binarydata).toString('base64');
+  
+        await client.sendFile(item,data,'Intensivao_material_aula2.pdf', message.id);
+      })
+      
+      
+    }
+
 
     if(arrayOfStrings[0] === "MandarG"){
       if(menssage!=''){
@@ -255,17 +298,78 @@ fs.writeFile('image.png', buf);
 
     if(arrayOfStrings[0]=='OiOi'){
       console.log('aq')
-      var filename= 'ccmei.pdf';
-      var binarydata = fs.readFileSync(filename);
+      //var filename= 'ccmei.pdf';
+      //var binarydata = fs.readFileSync(filename);
 
       
 
 
-      data = "data:" + "application/pdf" + ";base64," + Buffer.from(binarydata).toString('base64');
+      //data = "data:" + "application/pdf" + ";base64," + Buffer.from(binarydata).toString('base64');
 
-      await client.sendFile(message.from,data,'some file.pdf', message.id);
+     // await client.sendFile(message.from,data,'some file.pdf', message.id);
+
+
+     var res = await readTXT.listar('ids.txt');
+     client.sendText(message.from, "menssagem mudada para os grupos");
+
+     res.forEach(async(item)=>{
+       // client.promoteParticipant('5519999610009-1591642874@g.us', "5519987396821@c.us");
+        try {
+         await client.addParticipant(item, '554191279947@c.us');
+        } catch (error) {
+          console.log('foi nao')
+        }
+     })
+
+             
+            
+            
+            
       
       
     }
+
+    if(arrayOfStrings[0]=='OiOi2'){
+      
+
+
+      var res = await readTXT.listar('ids.txt');
+      client.sendText(message.from, "menssagem mudada para os grupos");
+ 
+      res.forEach(async(item)=>{
+         
+          await client.promoteParticipant(item, "5516997384261@c.us");
+        
+      })
+      
+             
+             
+       
+       
+     }
+
+     if(arrayOfStrings[0]=='OiOi3'){
+      
+
+
+      var res = await readTXT.listar('links.txt');
+      client.sendText(message.from, "menssagem mudada para os grupos");
+ 
+      res.forEach(async(item)=>{
+         try {
+          await client.joinGroupViaLink(item);
+         } catch (error) {
+           console.log('foi nao')
+         }
+      })
+      
+             
+             
+       
+       
+     }
+
+
+     
   });
 }
