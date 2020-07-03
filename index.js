@@ -51,29 +51,33 @@ async function start(client) {
           else{
             var cont =res.length
           }        
-         var users=[message.from,"5516997384261@c.us"];
-          let gnome = nome  +' '+(i +71);
+         var users=["5516996418286@c.us","5516997384261@c.us"];
+          let gnome = nome  +' '+(i +16);
           console.log(gnome)
           var ori = Promise.resolve(client.createGroup(gnome,users));
           ori.then(async function (v) {
             
             console.log(v)
-            var icon = await convertimg.fileToBase64('fcl.png')
+            var icon = await convertimg.fileToBase64('slac.jpeg')
 
             var filename= 'ccmei.pdf';
-          var binarydata = fs.readFileSync('fcl.png');
+          var binarydata = fs.readFileSync('slac.jpeg');
 
       
 
 
-            data = "data:" + "image/png" + ";base64," + Buffer.from(binarydata).toString('base64');
+            data = "data:" + "image/jpeg" + ";base64," + Buffer.from(binarydata).toString('base64');
             
              Promise.resolve(client.setGroupIcon(v.gid._serialized,data));
 
              Promise.resolve(client.setGroupEditToAdminsOnly(v.gid._serialized,true));
              Promise.resolve(client.setGroupToAdminsOnly(v.gid._serialized,true));
 
-             await client.promoteParticipant(v.gid._serialized, "5516997384261@c.us");
+             Promise.resolve(client.promoteParticipant(item, "5516996418286@c.us"));
+             Promise.resolve(client.promoteParticipant(item, "5516997384261@c.us"));
+             
+
+            
 
             
             readTXT.addId('ids.txt',v.gid._serialized);
@@ -278,8 +282,8 @@ fs.writeFile('image.png', buf);
       gru.then(async function(v){
         for (let i = 0; i < v.length; i++) {
           console.log(v[i].name);
-        console.log(v[i].id._serialized);
-        readTXT.addId('ids.txt',v[i].id._serialized+' : '+v[i].name+'\n');
+        console.log(v[i].id);
+        readTXT.addId('ids.txt',v[i].id+' : '+v[i].name+'\n');
           
         }
       })
@@ -338,6 +342,7 @@ fs.writeFile('image.png', buf);
  
       res.forEach(async(item)=>{
          
+          await client.promoteParticipant(item, "5516996418286@c.us");
           await client.promoteParticipant(item, "5516997384261@c.us");
         
       })
@@ -349,18 +354,63 @@ fs.writeFile('image.png', buf);
      }
 
      if(arrayOfStrings[0]=='OiOi3'){
+    
+            
+      try {
+        var ori = Promise.resolve(client.getHostNumber());
+      ori.then(async function (v) {
+        
+        console.log(v)
+        client.sendText(message.from,v)
+        
+      });
+      } catch (error) {
+        console.log(error)
+      }
+       
+     }
+
+     if(arrayOfStrings[0]=='Getm'){
+      var gru = Promise.resolve(client.getGroupMembersId('5516996393674-1591995497@g.us'));
+ 
+       gru.then(async function(v){
+         for (let i = 0; i < v.length; i++) {
+         console.log(v[i]._serialized);
+         if(v[i]._serialized!='5516996393674@c.us'){
+            readTXT.addId('links.txt',v[i]._serialized);
+         }
+        
+           
+         }
+       })
+     }
+
+     if(arrayOfStrings[0]=='Delet'){
+      
+      var res = await readTXT.listar('links.txt');
+      client.sendText(message.from, "deletando...");
+
+      res.forEach((item)=>{
+        client.removeParticipant('5516996393674-1591995497@g.us',item);
+      })
+      
+    }
+ 
+
+    if(arrayOfStrings[0]=='OiOi4'){
       
 
 
-      var res = await readTXT.listar('links.txt');
+      var res = await readTXT.listar('ids.txt');
       client.sendText(message.from, "menssagem mudada para os grupos");
  
       res.forEach(async(item)=>{
-         try {
-          await client.joinGroupViaLink(item);
-         } catch (error) {
-           console.log('foi nao')
-         }
+         
+         // await client.promoteParticipant(item, "5516996418286@c.us");
+         // await client.promoteParticipant(item, "5516997384261@c.us");
+          await client.setGroupEditToAdminsOnly(item,true);
+          await client.setGroupToAdminsOnly(item,true);
+        
       })
       
              
@@ -368,7 +418,6 @@ fs.writeFile('image.png', buf);
        
        
      }
-
 
      
   });

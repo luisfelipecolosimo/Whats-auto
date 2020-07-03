@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@open-wa/wa-automate": "^1.9.65"
+    "@open-wa/wa-automate": "^1.9.91"
   },
   "devDependencies": {}
 }
